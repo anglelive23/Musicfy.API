@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Musicfy.API.Entities.Data
+﻿namespace Musicfy.API.Entities.Data
 {
     public class MusicfyContext : DbContext
     {

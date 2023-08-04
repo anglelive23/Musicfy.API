@@ -1,7 +1,4 @@
-﻿using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
-
-namespace Musicfy.API.Entities.DataModel
+﻿namespace Musicfy.API.Entities.DataModel
 {
     public class MusicfyEntityDataModel
     {

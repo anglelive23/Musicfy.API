@@ -1,14 +1,9 @@
-using Microsoft.AspNetCore.OData;
-using Microsoft.EntityFrameworkCore;
-using Musicfy.API.Entities.Data;
-using Musicfy.API.Entities.DataModel;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers().AddOData(options => options.AddRouteComponents("api/odata", new MusicfyEntityDataModel().GetEntityDataModel()).Select().Filter().OrderBy().Count().Expand().SetMaxTop(100));
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.AddRouteComponents("api/odata", new MusicfyEntityDataModel().GetEntityDataModel()).Select().Filter().OrderBy().Expand().SetMaxTop(1000);
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -18,19 +13,32 @@ builder.Services.AddDbContext<MusicfyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-var app = builder.Build();
+// Serilog
+builder.Host.UseSerilog();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-// Configure the HTTP request pipeline.
+// Cache
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
+});
+
+// Cors
+builder.Services.AddCors();
+
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseCors(cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.MapControllers();
-
+app.UseOutputCache();
 app.Run();
