@@ -13,6 +13,9 @@ builder.Services.AddDbContext<MusicfyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Repositories
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 // Serilog
 builder.Host.UseSerilog();
 Log.Logger = new LoggerConfiguration()
@@ -24,7 +27,10 @@ Log.Logger = new LoggerConfiguration()
 // Cache
 builder.Services.AddOutputCache(options =>
 {
-    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
+    //options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
+    options.AddPolicy("Categories", policy => policy.Tag("Categories").Expire(TimeSpan.FromHours(1)));
+    options.AddPolicy("Category", policy => policy.SetVaryByQuery("key").Tag("Categories").Expire(TimeSpan.FromHours(1)));
+
 });
 
 // Cors

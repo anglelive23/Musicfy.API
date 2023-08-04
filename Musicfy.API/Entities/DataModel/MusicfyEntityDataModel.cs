@@ -6,6 +6,8 @@
         {
             var builder = new ODataConventionModelBuilder();
 
+            builder.EntitySet<Category>("Categories");
+
             return builder.GetEdmModel();
         }
     }

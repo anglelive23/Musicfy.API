@@ -9,5 +9,7 @@
         public IList<Song>? Songs { get; set; }
         public Image? Image { get; set; }
         public int? ImageId { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public string? Description { get; set; }
     }
 }

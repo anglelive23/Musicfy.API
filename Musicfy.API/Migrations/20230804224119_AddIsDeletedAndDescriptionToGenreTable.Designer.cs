@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Musicfy.API.Entities.Data;
 
@@ -11,9 +12,11 @@ using Musicfy.API.Entities.Data;
 namespace Musicfy.API.Migrations
 {
     [DbContext(typeof(MusicfyContext))]
-    partial class MusicfyContextModelSnapshot : ModelSnapshot
+    [Migration("20230804224119_AddIsDeletedAndDescriptionToGenreTable")]
+    partial class AddIsDeletedAndDescriptionToGenreTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
