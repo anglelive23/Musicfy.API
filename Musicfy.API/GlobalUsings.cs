@@ -6,4 +6,4 @@ global using Serilog.Sinks.SystemConsole.Themes;
 global using Serilog;
 global using Microsoft.OData.Edm;
 global using Microsoft.OData.ModelBuilder;
-global using Microsoft.EntityFrameworkCore;
+global using System.ComponentModel.DataAnnotations;

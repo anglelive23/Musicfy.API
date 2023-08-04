@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Entities\Models\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
