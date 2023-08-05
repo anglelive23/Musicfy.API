@@ -8,6 +8,7 @@
 
             builder.EntitySet<Category>("Categories");
 
+            builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
         }
     }
