@@ -17,3 +17,4 @@ global using System.Linq.Expressions;
 global using Microsoft.AspNetCore.OData.Query;
 global using Microsoft.AspNetCore.OutputCaching;
 global using Microsoft.AspNetCore.OData.Results;
+global using Musicfy.API;

@@ -25,11 +25,11 @@
         {
             try
             {
-                var accounts = _context
+                var categories = _context
                     .Categories
                     .Where(predicate);
 
-                return accounts;
+                return categories;
             }
             catch (Exception ex) when (ex is ArgumentNullException
                                     || ex is InvalidOperationException
@@ -43,11 +43,11 @@
         {
             try
             {
-                var account = _context
+                var category = await _context
                     .Categories
-                    .FirstOrDefault(a => a.Id == id);
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
-                return await Task.FromResult(account);
+                return category;
             }
             catch (Exception ex) when (ex is ArgumentNullException
                                     || ex is InvalidOperationException

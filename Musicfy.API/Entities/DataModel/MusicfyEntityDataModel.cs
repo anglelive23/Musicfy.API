@@ -7,6 +7,7 @@
             var builder = new ODataConventionModelBuilder();
 
             builder.EntitySet<Category>("Categories");
+            builder.EntitySet<Artist>("Artists");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

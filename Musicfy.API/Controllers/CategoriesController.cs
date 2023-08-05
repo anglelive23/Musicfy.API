@@ -22,9 +22,10 @@
         {
             try
             {
+                Log.Information("Starting controller Categories action GetAllCategories.");
                 var categories = _repo
                     .GetCategories(a => a.IsDeleted == false);
-
+                Log.Information("Returning all Categories to the caller.");
                 return Ok(categories);
             }
             catch (Exception ex) when (ex is DataFailureException
@@ -42,9 +43,10 @@
         {
             try
             {
+                Log.Information("Starting controller Categories action GetCategoryById.");
                 var category = _repo
                     .GetCategories(a => a.Id == key && a.IsDeleted == false);
-
+                Log.Information("Returning Category data to the caller.");
                 return Ok(SingleResult.Create(category));
             }
             catch (Exception ex) when (ex is DataFailureException
