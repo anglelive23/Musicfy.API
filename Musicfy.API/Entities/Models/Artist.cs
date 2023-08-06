@@ -13,5 +13,8 @@
         public int? ImageId { get; set; }
         public IList<Album>? Albums { get; set; }
         public IList<Song>? Songs { get; set; }
+        public bool IsFeatured { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? LastModified { get; set; } = DateTime.UtcNow;
     }
 }

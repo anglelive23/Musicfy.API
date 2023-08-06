@@ -18,3 +18,4 @@ global using Microsoft.AspNetCore.OData.Query;
 global using Microsoft.AspNetCore.OutputCaching;
 global using Microsoft.AspNetCore.OData.Results;
 global using Musicfy.API;
+global using Microsoft.AspNetCore.OData.Deltas;
