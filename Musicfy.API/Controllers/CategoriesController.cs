@@ -58,5 +58,125 @@
             }
         }
         #endregion
+
+        #region Post
+        [HttpPost("categories")]
+        public async Task<IActionResult> AddCategory([FromBody] Category newCategory, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action AddCategory.");
+
+                var category = await _repo
+                    .AddCategoryAsync(newCategory);
+
+                if (category is null)
+                    return BadRequest("Category already exists with same Name!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information("Category has been added.");
+                return Created(category);
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Put
+        [HttpPut("categories({key})")]
+        public async Task<IActionResult> UpdateCategory(int key, [FromBody] Category category, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action UpdateCategory.");
+
+                var currentCategory = await _repo
+                    .UpdateCategoryAsync(key, category);
+
+                if (currentCategory == null)
+                    return NotFound("Category not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information($"Category with id: {key} has been updated.");
+                return NoContent();
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Patch
+        [HttpPatch("categories({key})")]
+        public async Task<IActionResult> PartUpdateCategory(int key, [FromBody] Delta<Category> category, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action PartUpdateCategory.");
+
+                var currentCategory = await _repo
+                    .PartUpdateCategoryAsync(key, category);
+
+                if (currentCategory == null)
+                    return NotFound("Category not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information($"Category with id: {key} has been patched.");
+                return NoContent();
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Delete
+        [HttpDelete("categories({key})")]
+        public async Task<IActionResult> RemoveCategory(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action RemoveCategory.");
+
+                var currentCategory = await _repo
+                    .RemoveCategoryAsync(key);
+
+                if (currentCategory is false)
+                    return NotFound("Category not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information($"Category with id: {key} has been marked as deleted.");
+                return NoContent();
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
     }
 }
